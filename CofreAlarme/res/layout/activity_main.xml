@@ -13,36 +13,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        
         android:layout_marginTop="42dp" />
 
     <TextView
         android:id="@+id/update_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/update_text"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="62dp"
-        android:layout_marginLeft="40dp"
+        android:gravity="center_horizontal"
         android:text="@string/update"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/end_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/update_text"
-        android:layout_below="@+id/start_alarm"
-        android:text="@string/end_alarm"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/start_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@id/timePicker"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="42dp"
         android:text="@string/start_alarm"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/end_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_alarm"
+        android:layout_centerHorizontal="true"
+        android:text="@string/end_alarm"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
