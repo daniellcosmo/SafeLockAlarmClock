@@ -1,5 +1,6 @@
 package com.example.cofrealarme;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.os.Vibrator;
 import android.util.Log; 
 
+@SuppressLint("NewApi")
 public class Alarm_Receiver extends BroadcastReceiver {
 
 	@Override
