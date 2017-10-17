@@ -31,13 +31,14 @@ public final class R {
         public static final int medio=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0008;
+        public static final int action_settings=0x7f0a0009;
         public static final int button1=0x7f0a0002;
         public static final int editText1=0x7f0a0003;
-        public static final int end_alarm=0x7f0a0007;
+        public static final int end_alarm=0x7f0a0006;
         public static final int imageView1=0x7f0a0000;
         public static final int imageView2=0x7f0a0001;
-        public static final int start_alarm=0x7f0a0006;
+        public static final int inputSenha=0x7f0a0008;
+        public static final int start_alarm=0x7f0a0007;
         public static final int timePicker=0x7f0a0004;
         public static final int update_text=0x7f0a0005;
     }
@@ -63,6 +64,7 @@ public final class R {
         public static final int title_activity_cofre=0x7f080007;
         public static final int update=0x7f080006;
         public static final int update_text=0x7f080005;
+        public static final int zero=0x7f080009;
     }
     public static final class style {
         /** 

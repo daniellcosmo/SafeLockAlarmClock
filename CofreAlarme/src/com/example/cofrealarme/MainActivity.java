@@ -1,7 +1,6 @@
 package com.example.cofrealarme;
 
 import java.util.Calendar;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -15,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.util.Log;
@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     Button start_alarm;
     Button end_alarm;
     PendingIntent pending_intent;
+    EditText inputSenha;
 
 
     @Override
@@ -47,17 +48,24 @@ public class MainActivity extends Activity {
 
         // Inicializar nosso update_text
         update_text = (TextView) findViewById(R.id.update_text);
+        
+        //Inicializar o Campo para Definição de Senha
+        inputSenha = (EditText) findViewById (R.id.inputSenha);
 
-        //Criar uma instancia de calendÃ¡rio
+        //Criar uma instancia de calendario
         final Calendar calendario = Calendar.getInstance();
 
         //Inicializar Button start_alarm
         Button start_alarm = (Button) findViewById(R.id.start_alarm);
 
-
         //Criar um intent para a classe Alarm Reciver
         final Intent alarm_intent = new Intent(MainActivity.this, Alarm_Receiver.class);
-
+        
+        //Utiliza uma máscara para o inputSenha utilizando a classe MaskEditUtil
+        inputSenha.addTextChangedListener(MaskEditUtil.mask(inputSenha, MaskEditUtil.FORMATO_SENHA));
+        //Para retornar o inputSenha sem os caracteres para dentro de um textView
+        //textView.setText(String.valueOf(MaskEditUtil.unmask(inputSenha.getText().toString())));
+        inputSenha.setText(null);
 
         //Criar um onClickListener para o stat_alarm
         start_alarm.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +100,24 @@ public class MainActivity extends Activity {
                 long now = Calendar.getInstance().getTimeInMillis();
 
                 if(timePicker <= now) {
-                    set_alarm_text("Selecione um horÃ¡rio no futuro");
+                    set_alarm_text("Selecione um horário futuro.");
+                    
+                } else if (MaskEditUtil.unmask(inputSenha.getText().toString()).length() != 6) {
+                	set_alarm_text("Insira uma senha de seis (6) digitos.");
+                	
                 } else {
-                    String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+                	
+                	String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
-                    // Metodo para alterar o textView
-                    set_alarm_text("Alarme Ativado para: " + timeAgo);
-
-
+                    // Metodo para alterar o textView e Traduz Datas
+                    set_alarm_text("Alarme ativado para daqui a " +
+                		timeAgo.replaceAll("hours","horas").replaceAll("hour", "hora")
+                    	.replaceAll("minuts", "minutos").replaceAll("minute", "minuto")
+                		.replaceAll("second", "segundo").replaceAll("seconds", "segundos")
+						.replaceAll("0 segundos", "menos de 1 minuto")
+						.replaceAll("in ", ""));
+                    
+                    
                     //Colocar uma extra string no alarm_intent
                     // Diz ao despertador que que o despertador foi ligado
                     alarm_intent.putExtra("extra", true);

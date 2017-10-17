@@ -27,22 +27,37 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
-        android:id="@+id/start_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timePicker"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
-        android:text="@string/start_alarm"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
         android:id="@+id/end_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/start_alarm"
+        android:layout_above="@+id/update_text"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
         android:text="@string/end_alarm"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/start_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/end_alarm"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_alarm"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/inputSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/start_alarm"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:ems="5"
+        android:inputType="number"
+        android:hint="Senha" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

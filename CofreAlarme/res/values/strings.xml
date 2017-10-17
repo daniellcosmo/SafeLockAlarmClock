@@ -10,5 +10,6 @@
     <string name="update">Você ativou o alarme?</string>
     <string name="title_activity_cofre">CofreActivity</string>
     <string name="desativar">Desativar</string>
+    <string name="zero">00-00-00</string>
 
 </resources>

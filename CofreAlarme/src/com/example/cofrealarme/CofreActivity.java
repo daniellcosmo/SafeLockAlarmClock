@@ -27,8 +27,13 @@ public class CofreActivity extends Activity {
 		button1 = (Button) findViewById (R.id.button1);
 		editText1 = (EditText) findViewById (R.id.editText1);
 		
+		editText1.addTextChangedListener(MaskEditUtil.mask(editText1, MaskEditUtil.FORMATO_SENHA));
+		
 		button1.setVisibility(View.INVISIBLE);
 		editText1.setVisibility(View.INVISIBLE);
+		
+		//Utilizar para capturar editText sem caracteres adicionais.
+		//MaskEditUtil.unmask(editText1.getText().toString());
 		
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
