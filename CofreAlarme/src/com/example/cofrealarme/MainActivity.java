@@ -1,6 +1,7 @@
 package com.example.cofrealarme;
 
 import java.util.Calendar;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -27,6 +28,7 @@ import android.widget.TimePicker;
 import android.util.Log;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
     //Fazer o alarmManager
@@ -56,9 +58,6 @@ public class MainActivity extends Activity {
         // Inicializar nosso update_text
         update_text = (TextView) findViewById(R.id.update_text);
         
-        //Inicializar o Campo para Defini��o de Senha
-        inputSenha = (EditText) findViewById (R.id.inputSenha);
-
         //Criar uma instancia de calendario
         final Calendar calendario = Calendar.getInstance();
 
@@ -68,12 +67,6 @@ public class MainActivity extends Activity {
         //Criar um intent para a classe Alarm Reciver
         final Intent alarm_intent = new Intent(MainActivity.this, Alarm_Receiver.class);
         
-        //Utiliza uma m�scara para o inputSenha utilizando a classe MaskEditUtil
-        inputSenha.addTextChangedListener(MaskEditUtil.mask(inputSenha, MaskEditUtil.FORMATO_SENHA));
-        //Para retornar o inputSenha sem os caracteres para dentro de um textView
-        //textView.setText(String.valueOf(MaskEditUtil.unmask(inputSenha.getText().toString())));
-        inputSenha.setText(null);
-
         //Criar um onClickListener para o stat_alarm
         start_alarm.setOnClickListener(new View.OnClickListener() {
 
@@ -109,10 +102,7 @@ public class MainActivity extends Activity {
                 if(timePicker <= now) {
                     set_alarm_text("Selecione um horario futuro.");
                     
-                } else if (MaskEditUtil.unmask(inputSenha.getText().toString()).length() != 6) {
-                	set_alarm_text("Insira uma senha de seis (6) digitos.");
-                	
-                } else {
+                }  else {
                 	
                 	String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
