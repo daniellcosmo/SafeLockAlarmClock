@@ -1,6 +1,7 @@
 package com.example.cofrealarme;
 
 import java.util.Calendar;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -27,6 +28,7 @@ import android.widget.TimePicker;
 import android.util.Log;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
     //Fazer o alarmManager
@@ -105,24 +107,36 @@ public class MainActivity extends Activity {
 
                 long timePicker = calendario.getTimeInMillis();
                 long now = Calendar.getInstance().getTimeInMillis();
+                long timePicker2 = 0;
+                
+              //TimePicker sem time passado, corrigido para time futuro.
+                if (timePicker <= now) {
+                	set_alarm_text("Selecione um tempo futuro.");
+                /*  long h24 = 24 * 60 * 60 * 1000;
+                    long HminTp = (Long.valueOf(minuto) * 60 * 1000) + (Long.valueOf(hora) * 60 * 60 * 1000);
+                    long HminNow = (Calendar.getInstance().get(Calendar.MINUTE) * 60 * 1000) +
+                    		(Calendar.getInstance().get(Calendar.MINUTE) * 60 * 60 * 1000);
 
-                if(timePicker <= now) {
-                    set_alarm_text("Selecione um horario futuro.");
-                    
-                } else if (MaskEditUtil.unmask(inputSenha.getText().toString()).length() != 6) {
+                    timePicker = now + (h24 + HminTp - HminNow); 
+                    Log.i("TimePicker", String.valueOf(timePicker));*/
+                }
+                
+                else if (MaskEditUtil.unmask(inputSenha.getText().toString()).length() != 6) {
                 	set_alarm_text("Insira uma senha de seis (6) digitos.");
                 	
                 } else {
-                	
-                	String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+                	           	
+                	String timeAgo = DateUtils.getRelativeTimeSpanString(timePicker, now, DateUtils.SECOND_IN_MILLIS).toString();
 
+                	
+                	
                     // Metodo para alterar o textView e Traduz Datas
-                    set_alarm_text("Alarme ativado para daqui " +
+                    set_alarm_text("Alarme ativado para daqui a " +
                 		timeAgo.replaceAll("hours","horas").replaceAll("hour", "hora")
                     	.replaceAll("minuts", "minutos").replaceAll("minute", "minuto")
                 		.replaceAll("second", "segundo").replaceAll("seconds", "segundos")
 						.replaceAll("[0-9]{2} segundos", "menos de 1 minuto")
-						.replaceAll("in ", ""));
+						.replaceAll("in ", "").replaceAll("Tomorrow ", "amanhã") + ".");
                     
                     
                     //Colocar uma extra string no alarm_intent
