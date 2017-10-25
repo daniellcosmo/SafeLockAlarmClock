@@ -57,22 +57,23 @@ public class MainActivity extends Activity {
 
         // Inicializar nosso update_text
         update_text = (TextView) findViewById(R.id.update_text);
-        
+
         //Criar uma instancia de calendario
-        final Calendar calendario = Calendar.getInstance();
+
 
         //Inicializar Button start_alarm
         Button start_alarm = (Button) findViewById(R.id.start_alarm);
 
         //Criar um intent para a classe Alarm Reciver
         final Intent alarm_intent = new Intent(MainActivity.this, Alarm_Receiver.class);
-        
+
         //Criar um onClickListener para o stat_alarm
         start_alarm.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
+                final Calendar calendario = Calendar.getInstance();
                 //Setando a instancia calendario para horas e minutos
                 calendario.set(Calendar.HOUR_OF_DAY, alarm_timePicker.getCurrentHour());
                 calendario.set(Calendar.MINUTE, alarm_timePicker.getCurrentMinute());
@@ -100,51 +101,53 @@ public class MainActivity extends Activity {
                 long now = Calendar.getInstance().getTimeInMillis();
 
                 if(timePicker <= now) {
-                    set_alarm_text("Selecione um horario futuro.");
-                    
-                }  else {
-                	
-                	String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
-                    // Metodo para alterar o textView e Traduz Datas
-                    set_alarm_text("Alarme ativado para daqui " +
-                		timeAgo.replaceAll("hours","horas").replaceAll("hour", "hora")
-                    	.replaceAll("minuts", "minutos").replaceAll("minute", "minuto")
-                		.replaceAll("second", "segundo").replaceAll("seconds", "segundos")
-						.replaceAll("[0-9]{2} segundos", "menos de 1 minuto")
-						.replaceAll("in ", ""));
-                    
-                    
-                    //Colocar uma extra string no alarm_intent
-                    // Diz ao despertador que que o despertador foi ligado
-                    alarm_intent.putExtra("extra", true);
-
-
-                    //Criar um pending intent para entregar um intent
-                    // até que especifique o calendar time
-                    pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0,
-                            alarm_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-                    //Setar o alarm Manager
-                    alarm_manager.set(AlarmManager.RTC_WAKEUP, calendario.getTimeInMillis(),
-                            pending_intent);
-
-
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-                    Notification notification = new Notification.Builder(context)
-                            .setContentTitle("Alarme agendado!")
-                            .setContentText(String.format("Agendado para %s:%s", hora, minuto_string))
-                            .setSmallIcon(R.drawable.ic_launcher)
-                            .setAutoCancel(true)
-                            .setOngoing(true)
-                            .build();
-
-                    //Set up notificação start command
-                    notificationManager.notify(0, notification);
+                    int dia = calendario.get(Calendar.DAY_OF_MONTH);
+                    calendario.set(Calendar.DAY_OF_MONTH, dia + 1);
 
                 }
+
+                String timeAgo = DateUtils.getRelativeTimeSpanString(calendario.getTimeInMillis(), Calendar.getInstance().getTimeInMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+                // Metodo para alterar o textView e Traduz Datas
+                set_alarm_text("Alarme ativado para daqui " +
+                    timeAgo.replaceAll("hours","horas").replaceAll("hour", "hora")
+                    .replaceAll("minuts", "minutos").replaceAll("minute", "minuto")
+                    .replaceAll("second", "segundo").replaceAll("seconds", "segundos")
+                    .replaceAll("[0-9]{2} segundos", "menos de 1 minuto")
+                    .replaceAll("in ", ""));
+
+
+                //Colocar uma extra string no alarm_intent
+                // Diz ao despertador que que o despertador foi ligado
+                alarm_intent.putExtra("extra", true);
+
+
+                //Criar um pending intent para entregar um intent
+                // até que especifique o calendar time
+                pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0,
+                        alarm_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                //Setar o alarm Manager
+                alarm_manager.set(AlarmManager.RTC_WAKEUP, calendario.getTimeInMillis(),
+                        pending_intent);
+
+
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                Notification notification = new Notification.Builder(context)
+                        .setContentTitle("Alarme agendado!")
+                        .setContentText(String.format("Agendado para %s:%s", hora, minuto_string))
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setAutoCancel(true)
+                        .setOngoing(true)
+                        .build();
+
+                //Set up notificação start command
+                notificationManager.notify(0, notification);
+
+
 
             }
         });
@@ -164,9 +167,8 @@ public class MainActivity extends Activity {
                 //Cancela o alarme.
                 alarm_manager.cancel(pending_intent);
 
-
                 //Coloca uma extra String na intent
-                alarm_intent.putExtra("extra", false);
+                alarm_intent.putExtra("desligarAlarme", true);
 
                 //Para o ringtone
                 sendBroadcast(alarm_intent);
