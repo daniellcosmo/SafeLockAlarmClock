@@ -24,14 +24,21 @@ public class Alarm_Receiver extends BroadcastReceiver {
 	private float mUltimaAceleracao;
 	private float mAceleracaoAtual;
 	private MediaPlayer mp;
-	private boolean tocando = true;
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
+
+		boolean desligar = intent.getBooleanExtra("desligarAlarme", false);
+
 		final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		if(desligar) {
+			desligarAlarme(context, notificationManager, vibrator, false);
+			return;
+		}
+
+		final SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 		final Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
 		sensorManager.registerListener(new SensorEventListener() {
@@ -54,17 +61,7 @@ public class Alarm_Receiver extends BroadcastReceiver {
 					float delta = mAceleracaoAtual - mUltimaAceleracao;
 
 					if(delta > 14){
-						mp.stop();
-
-						Notification notification = new Notification.Builder(context)
-								.setContentTitle("Alarme")
-								.setContentText("Desligado com sucesso!")
-								.setSmallIcon(R.drawable.ic_launcher)
-								.setAutoCancel(true)
-								.build();
-
-						notificationManager.notify(0, notification);
-						vibrator.cancel();
+						desligarAlarme(context, notificationManager, vibrator, true);
 					}
 
 				}
@@ -93,5 +90,22 @@ public class Alarm_Receiver extends BroadcastReceiver {
 
 		vibrator.vibrate(20000);
 
+	}
+
+	private void desligarAlarme(Context context, NotificationManager notificationManager, Vibrator vibrator, boolean exibirNotificacao) {
+		if(mp != null)
+			mp.stop();
+
+		if(exibirNotificacao) {
+			Notification notification = new Notification.Builder(context)
+					.setContentTitle("Alarme")
+					.setContentText("Desligado com sucesso!")
+					.setSmallIcon(R.drawable.ic_launcher)
+					.setAutoCancel(true)
+					.build();
+
+			notificationManager.notify(0, notification);
+		}
+		vibrator.cancel();
 	}
 }
