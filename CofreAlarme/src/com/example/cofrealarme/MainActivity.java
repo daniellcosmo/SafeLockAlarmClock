@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
     Button end_alarm;
     PendingIntent pending_intent;
     EditText inputSenha;
+    
 
 
     @Override
@@ -120,7 +121,7 @@ public class MainActivity extends Activity {
 
                 //Colocar uma extra string no alarm_intent
                 // Diz ao despertador que que o despertador foi ligado
-                alarm_intent.putExtra("extra", true);
+                alarm_intent.putExtra("desligarAlarme", false);
 
 
                 //Criar um pending intent para entregar um intent
