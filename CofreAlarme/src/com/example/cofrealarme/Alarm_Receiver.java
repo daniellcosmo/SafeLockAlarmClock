@@ -73,12 +73,15 @@ public class Alarm_Receiver extends BroadcastReceiver {
 			}
 		}, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        PendingIntent p = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);		
+        
 		Notification notification = new Notification.Builder(context)
 				.setContentTitle("Alarme Disparado!")
 				.setContentText("Mova para destrancar")
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setAutoCancel(true)
 				.setOngoing(true)
+				.setContentIntent(p)
 				.build();
 
 		//Set up notificação start command
@@ -103,9 +106,15 @@ public class Alarm_Receiver extends BroadcastReceiver {
 					.setSmallIcon(R.drawable.ic_launcher)
 					.setAutoCancel(true)
 					.build();
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 			notificationManager.notify(0, notification);
+			
 		}
 		vibrator.cancel();
 	}
+	
+	
+	
 }
+

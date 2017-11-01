@@ -9,15 +9,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.FloatMath;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,8 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.util.Log;
-import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
@@ -133,8 +124,9 @@ public class MainActivity extends Activity {
                 //Setar o alarm Manager
                 alarm_manager.set(AlarmManager.RTC_WAKEUP, calendario.getTimeInMillis(),
                         pending_intent);
-
-
+                
+                PendingIntent p = PendingIntent.getActivity(MainActivity.this, 0, new Intent(MainActivity.this, MainActivity.class), 0);
+                
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 Notification notification = new Notification.Builder(context)
@@ -143,6 +135,7 @@ public class MainActivity extends Activity {
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setAutoCancel(true)
                         .setOngoing(true)
+                        .setContentIntent(p)
                         .build();
 
                 //Set up notificação start command
@@ -162,6 +155,15 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+            	
+            	//Boolean yourBool = getIntent().getExtras().getBoolean("desligarAlarme");//
+            	
+            	if ( (alarm_intent.getBooleanExtra("desligarAlarme", false))) {
+            		set_alarm_text("Nenhum Alarme Ativo");
+            	}
+            	
+            	else {
+            	
                 // Metodo para alterar o textView
                 set_alarm_text("Alarme Desativado");
 
@@ -173,6 +175,7 @@ public class MainActivity extends Activity {
 
                 //Para o ringtone
                 sendBroadcast(alarm_intent);
+            	}
 
 
             }
